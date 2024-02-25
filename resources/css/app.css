@@ -1,0 +1,35 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  body a:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .home:hover hr {
+    transform: translateX(-10px);
+}
+
+
+.bg-shop-banner {
+    background-image: url('/image/ShopBanner.svg');
+}
+
+.hide-label {
+
+    opacity: 0;
+}
+
+.group:hover  {
+    transform: translateX(0);
+}
+
+
