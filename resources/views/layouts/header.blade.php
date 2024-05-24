@@ -13,7 +13,7 @@
 
     </div>
 
-    <div class="flex items-center">
+    <div class="flex items-center ">
 
         <div x-data="{ dropdownOpen: false }" class="relative">
             <button @click="dropdownOpen = ! dropdownOpen"

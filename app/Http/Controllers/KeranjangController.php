@@ -22,7 +22,6 @@ class KeranjangController extends Controller
     {
         $datas = keranjang::where('user_id', Auth::User()->id)->get();
         return view('layouts.navbar', compact('datas'));
-
     }
 
     /**
@@ -38,28 +37,46 @@ class KeranjangController extends Controller
      */
     public function store(string $productId)
     {
-        keranjang::create([
-            'user_id' => Auth::user()->id,
-            'product_id' => $productId,
-        ]);
-        return redirect()->back()->with('AddCart','Product berhasil di tambahkan ke keranjang');
+        $keranjang = keranjang::where('product_id', '=', $productId);
+        $row = $keranjang->first();
+
+        if ($row == null) {
+            keranjang::create([
+                'user_id' => Auth::user()->id,
+                'product_id' => $productId,
+                'quantity' => 1,
+            ]);
+        }
+        if ($row  != null) {
+            keranjang::where('product_id', '=', $productId)->update([
+                'quantity' => (int) $row->quantity + 1,
+            ]);
+        }
+        return redirect()->back()->with('AddCart', 'Product berhasil di tambahkan ke keranjang');
     }
 
 
-    public function calculateTotalAmount(Request $request)
+    public function handleKeranjangMinus($productId)
     {
-        $selectedProductIds = $request->input('selectedProducts', []);
-        $totalAmount = 0;
 
-        foreach ($selectedProductIds as $productId) {
-            $product = product::find($productId);
-
-            if ($product) {
-                $totalAmount += $product->price;
-            }
+        $keranjang = keranjang::where('product_id', '=', $productId)->first();
+        if ($keranjang->quantity > 1) {
+            keranjang::where('product_id', '=', $productId)->update([
+                'quantity' => (int)$keranjang->quantity - 1
+            ]);
+            return redirect()->back();
         }
+        return redirect()->back()->with('message','oops');
 
-        return response()->json(['totalAmount' => $totalAmount]);
+    }
+
+    public function handleKeranjangPlus($productId)
+    {
+        $keranjang = keranjang::where('product_id', '=', $productId)->first();
+        keranjang::where('product_id', '=', $productId)->update([
+            'quantity' => (int)$keranjang->quantity + 1
+        ]);
+        return redirect()->back();
     }
     /**
      * Display the specified resource.
@@ -82,14 +99,16 @@ class KeranjangController extends Controller
      */
     public function update(Request $request, keranjang $keranjang)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(keranjang $keranjang)
+    public function destroy( $id)
     {
-        //
+        $data = keranjang::find($id);
+        $data->delete();
+
+        return  redirect()->route('keranjang.index');
     }
 }

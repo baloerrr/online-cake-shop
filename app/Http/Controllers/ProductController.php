@@ -22,7 +22,7 @@ class ProductController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $actionBtn = '<a href="' . route('product.show', $row->id) . '" class="edit btn btn-primary btn-sm">Show</a>
-                                  <a href="'.route('user.edit', $row->id).'" class="edit btn btn-success btn-sm">Edit</a>
+                                  <a href="'.route('product.edit', $row->id).'" class="edit btn btn-success btn-sm">Edit</a>
                                   <form action="' . route('product.destroy', $row->id) . '" method="POST" class="d-inline">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
@@ -57,6 +57,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric',
+            'quantity'=>'required',
             'catagory_id' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -95,15 +96,21 @@ class ProductController extends Controller
      */
     public function edit(product $product)
     {
-        //
+        $products = product::first();
+        $catagorys = catagory::get();
+        return view('product.edit', compact('products','catagorys'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, product $product)
+    public function update(Request $request, $id)
     {
-        //
+
+        $input = $request->all();
+        product::find($id)->update($input);
+
+        return redirect()->route('product.index')->with('success','Product updated successfully!');
     }
 
     /**

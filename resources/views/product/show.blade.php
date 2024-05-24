@@ -22,14 +22,27 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>price:</strong>
+            <strong>Price:</strong>
             {{ $product->price }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Quantity:</strong>
+            {{ $product->quantity }}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>image:</strong>
             <img src="{{ asset(  $product->image) }}" alt="Image" width="50">
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Category:</strong>
+            {{ $product->catagory->name_catagory }}
         </div>
     </div>
 

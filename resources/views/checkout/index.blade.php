@@ -16,7 +16,16 @@
                                 User</th>
                             <th
                                 class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Metode Pembayaran</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                                 Total</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                               Bukti Pembayaran</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                               Status</th>
 
                         </tr>
                     </thead>
@@ -36,19 +45,37 @@
                                     searchable: false
                                 },
                                 {
-                                    data: 'user_id',
-                                    name: 'user_id'
+                                    data: 'user',
+                                    name: 'user'
+                                },
+                                {
+                                    data: 'id_metodePembayaran',
+                                    name: 'id_metodePembayaran'
                                 },
                                 {
                                     data: 'total',
                                     name: 'total'
+                                },
+                                {
+                                    data: 'bukti_pembayaran',
+                                    name: 'bukti_pembayaran'
+                                },
+                                {
+                                    data: 'status',
+                                    name: 'status'
                                 },
                             ],
                         });
 
                     });
                 </script>
+            </div>
+        </div>
 
+            <div class="flex items-center justify-between text-lg text-gray-400 px-3 py-2 bg-white mx-6  rounded-lg">
+            <h1 class="">Total Keseluruhan</h1>
+            <div class="text-black">
+                <h1>{{$data}}</h1>
             </div>
 
         </div>

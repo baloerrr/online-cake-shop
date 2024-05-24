@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">0</h4>
+                                <h4 class="text-2xl font-semibold text-gray-700">{{\App\Models\checkout::count()}}</h4>
                                 <div class="text-gray-500">Total Orders</div>
                             </div>
                         </div>
@@ -112,7 +112,6 @@
                                     <th
                                         class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                                         Action</th>
-
                                 </tr>
                             </thead>
                         </table>

@@ -27,7 +27,7 @@ class UserController extends Controller
                                   <form action="' . route('user.destroy', $row->id) . '" method="POST" class="d-inline">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
-                                    <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this user?\')">Delete</button>
+                                    <button type="submit" class="delete  btn btn-sm bg-red-500 text-white transition-all hover:bg-red-700 " onclick="return confirm(\'Are you sure you want to delete this user?\')">Delete</button>
                                   </form>';
                     return $actionBtn;
                 })
@@ -42,6 +42,7 @@ class UserController extends Controller
                 ->rawColumns(['action', 'role'])
                 ->make(true);
         }
+
 
         return view('user.index');
     }
@@ -112,10 +113,13 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        $customer = customer::where('user_id',$id)->first();
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-        return view('user.edit', compact('user', 'roles', 'userRole'));
+
+
+        return view('user.edit', compact('customer','user','roles', 'userRole',));
     }
 
     public function update(Request $request, $id)

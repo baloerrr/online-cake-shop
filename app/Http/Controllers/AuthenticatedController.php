@@ -31,9 +31,13 @@ class AuthenticatedController extends Controller
     }
 
     public function dashboard(){
-        $breadcrumb = 'Dashboard';
-        return view('dashboard.index',['breadcrumb' => $breadcrumb]);
+        if(Auth::check()){
+            $breadcrumb = 'Dashboard';
+            return view('dashboard.index',['breadcrumb' => $breadcrumb]);
+        }
+        return redirect()->route('login')->with('message','login nying');
     }
+
     public function home(){
 
         return view('home.index');

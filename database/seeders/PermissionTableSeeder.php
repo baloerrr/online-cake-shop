@@ -11,7 +11,7 @@ namespace Database\Seeders;
     {
         //
         $permissions = [
-
+            'dashboard'
          ];
          foreach ($permissions as $permission) {
               Permission::create(['name' => $permission]);

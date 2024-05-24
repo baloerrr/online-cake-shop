@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('id_metodePembayaran');
+            $table->foreign('id_metodePembayaran')->references('id')->on('metode_pembayarans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('total');
+            $table->string('bukti_pembayaran');
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\checkout;
 use App\Models\keranjang;
+use App\Models\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -13,58 +14,71 @@ class CheckoutController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public  function index(Request $request) {
+    public  function index(Request $request)
+    {
 
         if ($request->ajax()) {
             $data = checkout::select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('user',function($row){
+                    $user = $row->user;
+                    foreach ($user as $key => $u) {
+                        return $u->name;
+                    }
+                })
+                ->addColumn('userEmail',function($row){
+                    $user = $row->user;
+                    foreach ($user as $key => $u) {
+                        return $u->email;
+                    }
+                })
                 ->make(true);
         }
-
-        return view('checkout.index');
+        $data = checkout::sum('total');
+        return view('checkout.index',compact('data'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store()
     {
-        // Validasi request
-        $request->validate([
-            'total' => 'required'
-        ]);
+        $krnjs = keranjang::with('product')->where('user_id',Auth::user()->id)->get();
+        $total = 0;
+        for($i=0;$i<count($krnjs);$i++){
+            $keranjangs = keranjang::with('product')->where('user_id',Auth::user()->id)->get()[$i];
+            $price = $keranjangs->product->price;
+            $quantity_keranjang = $keranjangs->quantity;
+            $subtotal = $price*$quantity_keranjang;
+            $total += $subtotal;
 
-        // Cek apakah keranjang kosong
-        $keranjangCount = Keranjang::where('user_id', Auth::user()->id)->count();
-
-        if ($keranjangCount == 0) {
-            // Jika keranjang kosong, redirect dengan pesan error
-            return redirect()->route('keranjang.index')->with('error', 'Keranjang kosong. Tidak dapat melakukan checkout.');
+            $product = product::where('id',$keranjangs->product->id)->first();
+            $update_quantity = $product->quantity - $quantity_keranjang;
+            $product->update([
+                'quantity' => $update_quantity,
+            ]);
+        }
+        if(count($krnjs)!=null){
+            checkout::create([
+                'user_id' => Auth::user()->id,
+                'id_metodePembayaran'=> 'required',
+                'bukti_pembayaran'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'status'=> 'processing',
+                'total' => $total,
+            ]);
+            keranjang::truncate();
         }
 
-        // Data untuk disimpan
-        $data = [
-            "user_id" => Auth::user()->id,
-            "total" => $request->total,
-        ];
-
-        // Buat checkout
-        checkout::create($data);
-
-        // Hapus keranjang
-        Keranjang::where('user_id', Auth::user()->id)->delete();
-
-        // Redirect ke halaman keranjang dengan pesan sukses
-        return redirect()->route('keranjang.index')->with('success', 'Checkout berhasil.');
+        return redirect()->back();
     }
+
+
 
     /**
      * Display the specified resource.

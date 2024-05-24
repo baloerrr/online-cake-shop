@@ -12,31 +12,31 @@
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <label for="name"><strong>Name:</strong></label>
-                <input type="text" name="name"  placeholder="Name" class="form-control">
+                <input type="text" name="name" value="{{$user->name}}"  placeholder="Name" class="form-control">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <label for="email"><strong>Email:</strong></label>
-                <input type="text" name="email"  placeholder="Email" class="form-control">
+                <input type="text" name="email" value="{{$user->email}}"  placeholder="Email" class="form-control">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <label for="email"><strong>Alamat:</strong></label>
-                <input type="text" name="alamat"  placeholder="Alamat" class="form-control">
+                <input type="text" name="alamat"  value="{{$customer->alamat}}" placeholder="Alamat" class="form-control">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <label for="email"><strong>No Handphone:</strong></label>
-                <input type="text" name="no_hp"  placeholder="No Handphone" class="form-control">
+                <input type="text" name="no_hp"  value="{{$customer->no_hp}}"  placeholder="No Handphone" class="form-control">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <label for="password"><strong>Password:</strong></label>
-                <input type="password" name="password" placeholder="Password" class="form-control">
+                <input type="password" name="password"  placeholder="Password" class="form-control">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">

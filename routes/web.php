@@ -26,31 +26,31 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('login',[AuthenticatedController::class,'create'])->name('login');
-Route::post('login',[AuthenticatedController::class,'store'])->name('login.post');
-Route::get('dashboard',[AuthenticatedController::class,'dashboard'])->name('dashboard');
+Route::get('login', [AuthenticatedController::class, 'create'])->name('login');
+Route::post('login', [AuthenticatedController::class, 'store'])->name('login.post');
+Route::get('dashboard', [AuthenticatedController::class, 'dashboard'])->name('dashboard');
 
-Route::get('register',[RegisterController::class,'create'])->name('register');
-Route::post('register',[RegisterController::class,'store'])->name('register.post');
+Route::get('register', [RegisterController::class, 'create'])->name('register');
+Route::post('register', [RegisterController::class, 'store'])->name('register.post');
 
-Route::get('logout',[AuthenticatedController::class,'destroy'])->name('logout');
-
-Route::resource('user',UserController::class);
-Route::resource('product',ProductController::class);
-Route::resource('customer',CustomerController::class);
-Route::resource('catagory',CatagoryController::class);
-Route::resource('checkout',CheckoutController::class);
-Route::resource('keranjang', KeranjangController::class);
+Route::get('logout', [AuthenticatedController::class, 'destroy'])->name('logout');
 
 Route::get('createUser', [UserController::class, 'createUser'])->name('createUser');
 Route::post('storeUser', [UserController::class, 'storeUser'])->name('storeUser');
-
-
+Route::middleware('hasRoleMiddleware')->group(function () {
+    Route::resource('user', UserController::class);
+    Route::resource('product', ProductController::class);
+    Route::post('product/{id}', [ProductController::class,'update'])->name('product.update');
+    Route::resource('customer', CustomerController::class);
+    Route::resource('catagory', CatagoryController::class);
+    Route::get('checkout', [CheckoutController::class,'index'])->name('checkout.index');
+});
 Route::get('home', [AuthenticatedController::class, 'home'])->name('home');
 Route::get('shop', [CustomerController::class, 'shop'])->name('shop');
 Route::get('shop/{id}', [CustomerController::class, 'shop']);
+Route::post('checkout', [CheckoutController::class,'store'])->name('checkout.store');
 Route::get('profile', [CustomerController::class, 'profile'])->name('profile');
-Route::post('keranjang/{productId}', [KeranjangController::class,'store'])->name('keranjang');
-
-
-
+Route::resource('keranjang', KeranjangController::class);
+Route::post('keranjang/{productId}', [KeranjangController::class, 'store'])->name('keranjang');
+Route::get('keranjang-handle-minus/{id}', [KeranjangController::class, 'handleKeranjangMinus'])->name('keranjang.handlerminus');
+Route::get('keranjang-handle-plus/{id}', [KeranjangController::class, 'handleKeranjangPlus'])->name('keranjang.handlerplus');
