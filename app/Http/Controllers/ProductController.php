@@ -14,23 +14,24 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public  function index(Request $request) {
+    public  function index(Request $request)
+    {
 
         if ($request->ajax()) {
             $data = product::select('*')->with('catagory');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $actionBtn = '<a href="' . route('product.show', $row->id) . '" class="edit btn btn-primary btn-sm">Show</a>
-                                  <a href="'.route('product.edit', $row->id).'" class="edit btn btn-success btn-sm">Edit</a>
+                    $actionBtn = '
+                                  <a href="' . route('product.edit', $row->id) . '" class="edit btn btn-success btn-sm">Edit</a>
                                   <form action="' . route('product.destroy', $row->id) . '" method="POST" class="d-inline">
                                     ' . csrf_field() . '
                                     ' . method_field('DELETE') . '
-                                    <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\')">Delete</button>
+                                    <button type="submit" class="delete  btn btn-sm bg-red-500 text-white transition-all hover:bg-red-700 " onclick="return confirm(\'Are you sure you want to delete this product?\')">Delete</button>
                                   </form>';
                     return $actionBtn;
-                })->addColumn('catagory',function($row){
-                        return $row->catagory->name_catagory;
+                })->addColumn('catagory', function ($row) {
+                    return $row->catagory->name_catagory;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -57,7 +58,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric',
-            'quantity'=>'required',
+            'quantity' => 'required',
             'catagory_id' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -81,7 +82,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = product::find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return redirect()->route('product.index')
@@ -91,26 +92,38 @@ class ProductController extends Controller
         return view('product.show', ['product' => $product]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(product $product)
+    public function edit(Product $product)
     {
-        $products = product::first();
-        $catagorys = catagory::get();
-        return view('product.edit', compact('products','catagorys'));
+        $catagorys = Catagory::all();
+        return view('product.edit', compact('product', 'catagorys'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'catagory_id' => 'required|exists:catagories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $product = Product::find($id);
+        if (!$product) {
+            return redirect()->route('product.index')
+                ->with('error', 'Product not found');
+        }
 
         $input = $request->all();
-        product::find($id)->update($input);
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $input['image'] = $imageName;
+        }
 
-        return redirect()->route('product.index')->with('success','Product updated successfully!');
+        $product->update($input);
+
+        return redirect()->route('product.index')->with('success', 'Product updated successfully!');
     }
 
     /**
@@ -118,8 +131,8 @@ class ProductController extends Controller
      */
     public function destroy(product $product)
     {
-       $product->delete();
+        $product->delete();
         return redirect()->route('product.index')
-        ->with('success', 'product deleted successfully');
+            ->with('success', 'product deleted successfully');
     }
 }

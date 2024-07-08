@@ -20,4 +20,15 @@ class checkout extends Model
     {
         return $this->hasMany(metodePembayaran::class);
     }
+
+    public function keranjang()
+    {
+        return $this->belongsTo(Keranjang::class);
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'user_id', 'user_id');
+    }
+
 }

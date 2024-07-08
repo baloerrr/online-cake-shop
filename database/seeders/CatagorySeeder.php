@@ -13,12 +13,8 @@ class CatagorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Food',
-            'Drink',
-            'Fresh',
-            'Beauty',
-            'Stationery',
-            'Electronic',
+            'Kue',
+            'Makanan Lain'
         ];
 
         foreach ($categories as $categoryName) {

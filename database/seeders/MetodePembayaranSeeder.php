@@ -16,12 +16,17 @@ class MetodePembayaranSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 5) as $index) {
-            DB::table('metode_pembayarans')->insert([
-                'name' => $faker->word,
-                'virtual_acc' => $faker->word,
-                'image' => $faker->imageUrl(5, 5, 'atm'),
-            ]);
-        }
+        DB::table('metode_pembayarans')->insert([
+            'name' => 'Dana',
+            'virtual_acc' => '085384086119',
+            'image' => null,
+        ]);
+    
+        // Inserting "Bank Mandiri" with a random account number and null image
+        DB::table('metode_pembayarans')->insert([
+            'name' => 'Bank Mandiri',
+            'virtual_acc' => $faker->bankAccountNumber,
+            'image' => null,
+        ]);
     }
 }

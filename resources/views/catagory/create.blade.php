@@ -20,15 +20,15 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block text-gray-600">Name catagory</label>
-                <input type="text" name="name_catagory" placeholder="Name Product"
+                <label class="block text-gray-600">Name Category</label>
+                <input type="text" name="name_catagory" placeholder="Name Category"
                     class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                     autocomplete="off">
             </div>
 
             <button type="submit"
                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full">Create
-                Product</button>
+                Category</button>
         </form>
     </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class AuthenticatedController extends Controller
             if (Auth::user()->hasRole('admin')){
                 return redirect()->intended('dashboard')->with('success','Login Successful!');
             }else{
-                return redirect()->intended('home')->with('success','Login Successful!');
+                return redirect()->intended(route('home'))->with('success','Login Successful!');
             }
 
         }else{
@@ -39,7 +40,7 @@ class AuthenticatedController extends Controller
     }
 
     public function home(){
-
+        
         return view('home.index');
     }
 

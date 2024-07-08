@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <div class="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
+                    <div class="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
                         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
                             <div class="p-3 bg-orange-600 bg-opacity-75 rounded-full">
                                 <svg class="w-8 h-8 text-white" viewBox="0 0 28 28" fill="none"
@@ -90,7 +90,7 @@
 
             </div>
 
-            <div class="flex flex-col mt-8 ">
+            {{-- <div class="flex flex-col mt-8 ">
                 <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                     <div
                         class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
@@ -117,7 +117,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

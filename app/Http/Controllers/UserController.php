@@ -22,7 +22,7 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $actionBtn = '<a href="' . route('user.show', $row->id) . '" class="edit btn btn-primary btn-sm">Show</a>
+                    $actionBtn = '
                                   <a href="'.route('user.edit', $row->id).'" class="edit btn btn-success btn-sm">Edit</a>
                                   <form action="' . route('user.destroy', $row->id) . '" method="POST" class="d-inline">
                                     ' . csrf_field() . '

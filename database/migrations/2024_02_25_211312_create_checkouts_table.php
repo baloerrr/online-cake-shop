@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('id_metodePembayaran');
             $table->foreign('id_metodePembayaran')->references('id')->on('metode_pembayarans')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('keranjang_id');
+            $table->foreign('keranjang_id')->references('id')->on('keranjangs')->onDelete('cascade')->onUpdate('cascade');
+            $table->date('tanggal_antar')->nullable();
             $table->string('total');
             $table->string('bukti_pembayaran');
             $table->string('status');

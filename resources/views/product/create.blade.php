@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-
     <div class="m-10">
         <div class="pull-right mb-2">
             <a class="btn btn-primary" href="{{ route('product.index') }}"> Back</a>
@@ -34,6 +33,13 @@
             </div>
 
             <div class="mb-4">
+                <label class="block text-gray-600">Quantity</label>
+                <input type="number" name="quantity" placeholder="Quantity"
+                    class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                    autocomplete="off">
+            </div>
+
+            <div class="mb-4">
                 <label class="block text-gray-600">Image</label>
                 <input type="file" name="image"
                     class="w-full border bg-white border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
@@ -41,10 +47,11 @@
             </div>
 
             <div class="mb-4">
-                <label for="catagory">Catagory</label>
-                <select id="catagory" name="catagory_id" class=" block   w-full text-sm text-gray-500  border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 peer">
-                    @foreach ($catagorys as $catagory )
-                    <option value="{{$catagory->id}}">{{$catagory->name_catagory}}</option>
+                <label for="catagory" class="block text-gray-600">Category</label>
+                <select id="catagory" name="catagory_id"
+                    class="block w-full text-sm text-gray-500 border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500">
+                    @foreach ($catagorys as $catagory)
+                        <option value="{{ $catagory->id }}">{{ $catagory->name_catagory }}</option>
                     @endforeach
                 </select>
             </div>
@@ -54,5 +61,4 @@
                 Product</button>
         </form>
     </div>
-
 @endsection

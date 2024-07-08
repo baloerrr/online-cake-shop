@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\checkout;
 use App\Models\keranjang;
 use App\Models\product;
 use Illuminate\Http\Request;
@@ -14,14 +15,17 @@ class KeranjangController extends Controller
      */
     public function index()
     {
+        $checkout = checkout::where('user_id', Auth::User()->id)->get();
+
         $datas = keranjang::where('user_id', Auth::User()->id)->get();
-        return view('keranjang.index', compact('datas'));
+        return view('keranjang.index', compact('datas', 'checkout'));
     }
 
     public function keranjang_hover()
     {
+        $checkout = checkout::where('user_id', Auth::User()->id)->get();
         $datas = keranjang::where('user_id', Auth::User()->id)->get();
-        return view('layouts.navbar', compact('datas'));
+        return view('layouts.navbar', compact('datas', 'checkout'));
     }
 
     /**
@@ -36,24 +40,24 @@ class KeranjangController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(string $productId)
-    {
-        $keranjang = keranjang::where('product_id', '=', $productId);
-        $row = $keranjang->first();
+{
+    // Hapus semua produk dengan is_checkout = false untuk user yang sedang login
+    Keranjang::where('user_id', Auth::user()->id)
+        ->where('is_checkout', false)
+        ->delete();
 
-        if ($row == null) {
-            keranjang::create([
-                'user_id' => Auth::user()->id,
-                'product_id' => $productId,
-                'quantity' => 1,
-            ]);
-        }
-        if ($row  != null) {
-            keranjang::where('product_id', '=', $productId)->update([
-                'quantity' => (int) $row->quantity + 1,
-            ]);
-        }
-        return redirect()->back()->with('AddCart', 'Product berhasil di tambahkan ke keranjang');
-    }
+    // Buat entri baru dengan status is_checkout = false
+    Keranjang::create([
+        'user_id' => Auth::user()->id,
+        'product_id' => $productId,
+        'quantity' => 1,
+        'is_checkout' => false,
+    ]);
+
+    return redirect()->route('keranjang.index')->with('AddCart', 'Produk berhasil ditambahkan ke keranjang');
+}
+
+
 
 
     public function handleKeranjangMinus($productId)
@@ -66,8 +70,7 @@ class KeranjangController extends Controller
             ]);
             return redirect()->back();
         }
-        return redirect()->back()->with('message','oops');
-
+        return redirect()->back()->with('message', 'oops');
     }
 
     public function handleKeranjangPlus($productId)
@@ -104,7 +107,7 @@ class KeranjangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         $data = keranjang::find($id);
         $data->delete();

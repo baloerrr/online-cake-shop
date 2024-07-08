@@ -27,6 +27,8 @@
     <div class="my-20">
         @yield('contentUser')
     </div>
+    @include('layouts.footer')
+    
 </body>
 
 </html>

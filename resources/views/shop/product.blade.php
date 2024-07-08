@@ -10,8 +10,8 @@
             <div id='{{ $product->id }}'
                 class="mt-5 w-full sm:w-48 md:w-52 lg:w-[243px] flex flex-col shadow-md transition-all hover:scale-105 hover:shadow-xl ease-out rounded-3xl  ">
                 <div class="  h-[15rem]">
-                    {{-- <img src="{{ asset('/' . $product->image) }}" alt="" class="h-full  w-full object-contain"> --}}
-                    <img src="{{  $product->image }}" alt="" class="h-full   w-full object-contain">
+                    <img src="{{ asset($product->image) }}" alt="" class="h-full w-full object-contain">
+                    {{-- <img src=" {{  $product->image }}" alt="" class="h-full   w-full object-contain"> --}}
                 </div>
                 <div class="flex flex-row justify-between items-center h-full p-3">
                     <div class="w-[70%]">
@@ -23,13 +23,21 @@
                         </div>
                         <h1 class="font-semibold text-xl text-orange-500">Rp {{ $product->price }} ,</h1>
                     </div>
-                    <form action="{{ url('keranjang/' . $product->id) }}" method="POST">
-                        @csrf
-                        <button type='submit'
+                    @if (Auth::check())
+                        <form action="{{ url('keranjang/' . $product->id) }}" method="POST">
+                            @csrf
+                            <button type='submit'
+                                class="outline-none hover:outline-none shadow-md w-10 h-10 ease-in transition-all hover:text-orange-500 hover:scale-110 rounded-full flex justify-center items-center">
+                                <i class="fa-solid fa-shop"></i>
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}"
                             class="outline-none hover:outline-none shadow-md w-10 h-10 ease-in transition-all hover:text-orange-500 hover:scale-110 rounded-full flex justify-center items-center">
                             <i class="fa-solid fa-shop"></i>
-                        </button>
-                    </form>
+                    </a>
+                    @endif
+
                 </div>
             </div>
         @endforeach
